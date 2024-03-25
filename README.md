@@ -1,6 +1,6 @@
 # Portfolio-architecte-sophie-bluel
 
-Code du projet 6 d'intégrateur web.
+Projet OpenClassrooms "Créez une page web dynamique avec JavaScript" par Sunny BIARD.
 
 ## Information pour le lancer le code
 
