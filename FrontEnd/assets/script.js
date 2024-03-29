@@ -9,7 +9,7 @@ function initializeGallery(works){
         const figcaption = document.createElement("figcaption");
 
         figure.id = element.id;
-        figure.categoryId = element.categoryId;
+        figure.dataset.category = element.categoryId;
         img.src = element.imageUrl;
         img.alt = element.title;
         figcaption.textContent = element.title;
@@ -45,17 +45,17 @@ function displayFiltersButtons(categories){
 
 function displayFilteredGallery(works, category){
 
-    const worksHidden = document.querySelectorAll(".gallery .worksHidden");
+    const worksHidden = document.querySelectorAll(".gallery figure");
     worksHidden.forEach(element => {
-        element.classList.remove("worksHidden");
+        element.classList.remove("hidden");
     })
 
     const worksFiltered = document.querySelectorAll(".gallery figure");
     worksFiltered.forEach(element => {
         
-        if(element.categoryId != category && category != 0){
+        if(element.dataset.category != category && category != 0){
 
-            element.classList.add("worksHidden");
+            element.classList.toggle("hidden");
         }
     })
 }
