@@ -8,6 +8,7 @@ function initializeGallery(works){
         const img = document.createElement("img");
         const figcaption = document.createElement("figcaption");
 
+        figure.id = element.id;
         figure.categoryId = element.categoryId;
         img.src = element.imageUrl;
         img.alt = element.title;
@@ -51,6 +52,7 @@ function displayFilteredGallery(works, category){
 
     const worksFiltered = document.querySelectorAll(".gallery figure");
     worksFiltered.forEach(element => {
+        
         if(element.categoryId != category && category != 0){
 
             element.classList.add("worksHidden");
