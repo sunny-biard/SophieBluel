@@ -2,6 +2,8 @@ const token = window.localStorage.getItem("token");
 
 if(token){
 
+    console.log(`TOKEN : ${token}`);
+
     const editModeBanner = document.querySelector(".editModeBanner");
     editModeBanner.style = "display: flex";
 
@@ -17,7 +19,28 @@ if(token){
     const editButton = document.querySelector(".editButton a");
     editButton.style = "display: inline-block";
     
-    const focusableSelectors = "button, a, file, input, select"
+    const focusableSelectors = "button, a, input[type=text], select"
+
+    fetch("http://localhost:5678/api/categories")
+    .then((resp) => resp.json())
+    .then(categories => {
+
+        categoriesInModal = document.querySelector("select[id=\"category\"]");
+
+        categories.forEach(element => {
+
+            const category = document.createElement("option");
+            category.value = element.id;
+            category.innerHTML = element.name;
+
+            categoriesInModal.appendChild(category);
+        }
+
+        )
+    })
+    .catch(function(error) {
+        console.log(error);
+    });
 
     function openModal() {
 
@@ -27,6 +50,7 @@ if(token){
         modal.querySelector(".modalWrapper").style.setProperty("animation", "slideFromTop .3s both");
         modal.removeAttribute("aria-hidden");
         modal.setAttribute("aria-modal", "true");
+        modal.querySelector(".modalContent1").style.setProperty("display", "flex");
 
         fetch("http://localhost:5678/api/works")
             .then((resp) => resp.json())
@@ -53,6 +77,7 @@ if(token){
                 console.log(error);
             });
 
+        
         modal.addEventListener("click", closeModal);
         modal.querySelector(".closeModalButton").addEventListener("click", closeModal);
         modal.querySelector(".modalWrapper").addEventListener("click", stopPropagation);
@@ -63,29 +88,40 @@ if(token){
 
     function closeModal() {
 
-        let activeModal = document.querySelector(".modal");
+        let modal = document.querySelector(".modal");
 
-        if(activeModal !== null){
+        if(modal !== null){
 
-            activeModal.style.setProperty("animation", "fadeOut .3s both");
-            activeModal.querySelector(".modalWrapper").style.setProperty("animation", "slideToBottom .3s both");
+            modal.style.setProperty("animation", "fadeOut .3s both");
+            modal.querySelector(".modalWrapper").style.setProperty("animation", "slideToBottom .3s both");
             
             window.setTimeout(function() {
 
-                activeModal.style="display: none";
+                modal.style.setProperty("display", "none");
             }, 500);
 
-            activeModal.setAttribute("aria-hidden", "true");
-            activeModal.removeAttribute("aria-modal");
-            activeModal.querySelector(".galleryInModal").removeEventListener("click", deleteWork);
-            activeModal.querySelectorAll(".galleryInModal figure").forEach(element => {
+            modal.setAttribute("aria-hidden", "true");
+            modal.removeAttribute("aria-modal");
+            modal.querySelector(".modalContent2").style.setProperty("display", "none");
+
+            document.querySelector(".navigationModalButtons").style.setProperty("justify-content", "flex-end");
+            previousModalButton = document.querySelector(".previousModalButton");
+            previousModalButton.style.setProperty("display", "none");
+
+            previousModalButton.removeEventListener("click", previousModal);
+            modal.querySelector(".galleryInModal").removeEventListener("click", deleteWork);
+            modal.querySelectorAll(".galleryInModal figure").forEach(element => {
 
                 element.remove();
             })
 
-            activeModal.removeEventListener("click", closeModal);
-            activeModal.querySelector(".closeModalButton").removeEventListener("click", closeModal);
-            activeModal.querySelector(".modalWrapper").removeEventListener("click", stopPropagation);
+            modal.removeEventListener("click", closeModal);
+            modal.querySelector(".closeModalButton").removeEventListener("click", closeModal);
+            modal.querySelector(".modalWrapper").removeEventListener("click", stopPropagation);
+            modal.querySelector(".addPictureForm").removeEventListener("change", validatePictureForm);
+            modal.querySelector(".addPictureForm button").removeEventListener("click", addPictureForm);
+
+            closePictureForm();
 
             window.removeEventListener("keydown", manageKeyboard);
         }
@@ -98,35 +134,31 @@ if(token){
 
     function manageKeyboard(e) {
 
-        e.preventDefault();
-
         if(e.key === "Escape" || e.key === "Esc"){
+
+            e.preventDefault();
             
-            if(!document.querySelector(".modal2[aria-hidden=\"true\"]")){
-                
-                closeModal2();
-            }
-            else{
-               
-                closeModal();
-            }
+            closeModal();
         }
 
         if(e.key === "Tab"){
 
+            e.preventDefault();
+
             let focusables = [];
             let index;
 
-            if(!document.querySelector(".modal2[aria-hidden=\"true\"]")){
+            if(document.querySelector(".modalContent1[style=\"display: flex;\"]")){
+            
+                focusables = Array.from(document.querySelector(".modalContent1").querySelectorAll(focusableSelectors));
+                focusables.unshift(document.querySelector(".closeModalButton"));
+            }
+            else {
                 
-                focusables = Array.from(document.querySelector(".modal2").querySelectorAll(focusableSelectors));
-                index = focusables.findIndex(f => f === document.querySelector(".modal2").querySelector(":focus"));
+                focusables = Array.from(document.querySelector(".modalContent2").querySelectorAll(focusableSelectors));
+                focusables.unshift(document.querySelector(".previousModalButton"), document.querySelector(".closeModalButton"));
             }
-            else{
-
-                focusables = Array.from(document.querySelector(".modal").querySelectorAll(focusableSelectors));
-                index = focusables.findIndex(f => f === document.querySelector(".modal").querySelector(":focus"));
-            }
+            index = focusables.findIndex(f => f === document.querySelector(".modalWrapper").querySelector(":focus"));
 
             if(e.shiftKey === true){
                 
@@ -191,80 +223,169 @@ if(token){
         }
     }
 
-    function openModal2(){
+    function previousModal() {
 
-        let modal2 = document.querySelector(".modal2");
-        modal2.style="display: flex";
-        modal2.removeAttribute("aria-hidden");
-        modal2.setAttribute("aria-modal", "true");
+        let activeModal = document.querySelector(".modalContent2");
+        let newModal = document.querySelector(".modalContent1");
 
-        modal2.addEventListener("click", closeModal2);
-        modal2.querySelector(".closeModalButton2").addEventListener("click", closeModal2);
-        modal2.querySelector(".previousModalButton").addEventListener("click", previousModal);
-        modal2.querySelector(".modalWrapper2").addEventListener("click", stopPropagation);
+        activeModal.style.setProperty("display", "none");
+        newModal.style.setProperty("display", "flex");
+
+        document.querySelector(".navigationModalButtons").style.setProperty("justify-content", "flex-end");
+        previousModalButton = document.querySelector(".previousModalButton");
+        previousModalButton.style.setProperty("display", "none");
+
+        closePictureForm();
     }
 
-    function closeModal2(e) {
+    function addPictureModal() {
 
-        let activeModal = document.querySelector(".modal2");
-        let previousModal = document.querySelector(".modal");
+        let activeModal = document.querySelector(".modalContent1");
+        let newModal = document.querySelector(".modalContent2");
+        let submitButton = newModal.querySelector(".addPictureForm button");
 
-        if(activeModal !== null){
+        activeModal.style.setProperty("display", "none");
+        newModal.style.setProperty("display", "flex");
 
-            if(!e || e.target.className == "closeModalButton2"){
+        submitButton.setAttribute("disabled", true);
+        document.querySelector(".navigationModalButtons").style.setProperty("justify-content", "space-between");
+        
+        previousModalButton = document.querySelector(".previousModalButton");
+        previousModalButton.style.setProperty("display", "block");
+        previousModalButton.addEventListener("click", previousModal);
 
-                activeModal.style.setProperty("animation", "fadeOut .3s both");
-                activeModal.querySelector(".modalWrapper2").style.setProperty("animation", "slideToBottom .3s both");
+        newModal.querySelector(".addPictureForm").addEventListener("change", validatePictureForm);
+        submitButton.addEventListener("click", addPictureForm);
+    }
 
-                previousModal.style.setProperty("animation", "none");
-                previousModal.querySelector(".modalWrapper").style.setProperty("animation", "none");
+    function closePictureForm() {
+
+        let form = document.forms["addPictureForm"];
+
+        for(let i = 0; i < form.length - 1; i++){
+
+            if(form.elements[i].type === "file" && form.elements[i].value){
+
+                document.querySelector(".pictureField img").remove();
+            }
+            form.elements[i].value = null;
+        }
+
+        document.querySelector(".pictureSpan").style.setProperty("display", "flex");
+    }
+
+    function validatePictureForm() {
+
+        let form = document.forms["addPictureForm"];
+        let pictureField = document.querySelector(".pictureField");
+        let submitPicture = document.querySelector(".addPictureForm button");
+        let submittable = true;
+
+        for(let i = 0; i < form.length - 1; i++){
+
+            if(form.elements[i].value.length == 0){
+
+                submittable = false;
+            }
+            else {
+               
+                if(form.elements[i].type === "file"){
+                
+                    if(!pictureField.querySelector("img")){
+
+                        const picture = document.createElement("img");
+                        picture.src = "assets/images/" + form.elements[i].files[0].name;
+
+                        pictureField.querySelector(".pictureSpan").style.setProperty("display", "none");
+                        pictureField.appendChild(picture);
+                    }
+               }
+            }
+        }
+
+        if(submittable){
+
+            submitPicture.removeAttribute("disabled");
+            submitPicture.classList.add("submitPicture");
+        }
+        else {
+
+            submitPicture.setAttribute("disabled", null);
+            submitPicture.classList.remove("submitPicture");
+        }
+    }
+
+    function addPictureForm(e) {
+
+        e.preventDefault();
+
+        const addPictureForm = document.querySelector(".addPictureForm");
+        const formData = new FormData(addPictureForm);
+
+        let gallery = document.querySelector(".gallery");
+        let galleryInModal = document.querySelector(".galleryInModal");
+
+        fetch("http://localhost:5678/api/works", {   
+            method: "POST",
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
+            body: formData,
+        })
+        .then((resp) => resp.json().then(data => {
+
+            if(resp.status === 201){
+
+                const figure = document.createElement("figure");
+                const img = document.createElement("img");
+                const figcaption = document.createElement("figcaption");
+
+                figure.id = data.id;
+                figure.dataset.category = data.categoryId;
+                img.src = data.imageUrl;
+                img.alt = data.title;
+                figcaption.textContent = data.title;
+
+                figure.appendChild(img);
+                figure.appendChild(figcaption);
+
+                gallery.appendChild(figure);
+
+                console.log(`CREATION SUCCESSFUL\nResponse status : ${resp.status}`);
+                alert("Le projet a bien été ajouté.");
 
                 closeModal();
             }
-            
-            window.setTimeout(function() {
+            else if(resp.status === 400){
 
-                activeModal.style="display: none";
-            }, 500);
+                console.log(`CREATION FAILED : BAD REQUEST\nResponse status : ${resp.status}`);
+                alert("Le projet n'a pas pu être ajouté : au moins l'un des champs est invalide.");
+            }
+            else if(resp.status === 401){
 
-            activeModal.setAttribute("aria-hidden", "true");
-            activeModal.removeAttribute("aria-modal");
-            
-            activeModal.removeEventListener("click", closeModal2);
-            activeModal.querySelector(".closeModalButton2").removeEventListener("click", closeModal2);
-            activeModal.querySelector(".previousModalButton").removeEventListener("click", closeModal2);
-            activeModal.querySelector(".modalWrapper2").removeEventListener("click", stopPropagation);
+                console.log(`CREATION FAILED : UNAUTHORIZED ACCESS\nResponse status : ${resp.status}`);
+                alert("Le projet n'a pas pu être ajouté : accès refusé.");
+            }
+            else {
 
-            window.removeEventListener("keydown", manageKeyboard);
-        }
+                console.log(`CREATION FAILED : UNKNOWN ERROR\nResponse status : ${resp.status}`);
+                alert("Le projet n'a pas pu être ajouté : erreur inconnue, veuillez réessayer.");
+            }
+        }))
+        .catch(function(error) {
+            console.log(error);
+        });
     }
 
-    function previousModal() {
+    function logout(){
 
-        let activeModal = document.querySelector(".modal2");
-
-        if(activeModal !== null){
-
-            activeModal.style = "animation: none";
-            activeModal.querySelector(".modalWrapper2").style = "animation: none";
-            
-            window.setTimeout(function() {
-
-                activeModal.style="display: none";
-            }, 500);
-
-            activeModal.setAttribute("aria-hidden", "true");
-            activeModal.removeAttribute("aria-modal");
- 
-            activeModal.removeEventListener("click", closeModal2);
-            activeModal.querySelector(".closeModalButton2").removeEventListener("click", closeModal2);
-            activeModal.querySelector(".previousModalButton").removeEventListener("click", closeModal2);
-            activeModal.querySelector(".modalWrapper2").removeEventListener("click", stopPropagation);
-        }
+        window.localStorage.clear();
     }
+
+    logoutLink.addEventListener("click", logout);
 
     editButton.addEventListener("click", openModal);
 
     const addButton = document.querySelector(".addPicture");
-    addButton.addEventListener("click", openModal2);
+    addButton.addEventListener("click", addPictureModal);
 }

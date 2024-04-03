@@ -18,44 +18,50 @@
 <body>
 	<aside id="modalWindow" class="modal" aria-hidden="true" role="dialog" aria-labelledby="modalTitle">
 		<div class="modalWrapper">
-			<button class="closeModalButton"><i class="fa-solid fa-xmark"></i></button>
-			<h2 id="modalTitle">Galerie photo</h3>
-			<div class ="galleryInModal">
-			</div>
-			<hr width="100%" size="2">
-			<button class="addPicture">Ajouter une photo</button>
-		</div>
-	</aside>
-	<aside id="modalWindow2" class="modal2" aria-hidden="true" role="dialog" aria-labelledby="modalTitle2">
-		<div class="modalWrapper2">
-			<div class="navigationModal2">
+			<div class="navigationModalButtons">
 				<button class="previousModalButton"><i class="fa-solid fa-arrow-left"></i></button>
-				<button class="closeModalButton2"><i class="fa-solid fa-xmark"></i></button>
+				<button class="closeModalButton"><i class="fa-solid fa-xmark"></i></button>
 			</div>
-			<h2 id="modalTitle2">Ajout photo</h3>
-			<form method="post" class="loginForm">
-				<ul>
-					<li>
-						<label for="picture">+ Ajouter photo</label>
-						<input type="file" id="picture" accept="image/png, image/jpeg" />
-					</li>
-					<li>
-						<span>
-							<label for="title">Titre</label>
-							<input type="text" id="title" name="picture_title" />
-						</span>
-					</li>
-					<li>
-						<span>
-							<label for="category">Catégorie</label>
-							<select id="category" name="picture_category">
-							</select>
-						</span>
-					</li>
-				</ul>
+			<div class="modalContent1">
+				<h2 id="modalTitle">Galerie photo</h3>
+				<div class ="galleryInModal">
+				</div>
 				<hr width="100%" size="2">
-				<button type="submit" class="validate">Valider</button>
+				<button class="addPicture">Ajouter une photo</button>
+			</div>
+			<div class="modalContent2">
+				<h2 id="modalTitle2">Ajout photo</h2>
+				<form action="" method="post" name="addPictureForm" class="addPictureForm">
+					<ul>
+						<li>
+							<div class="pictureField">
+								<span class="pictureSpan">
+									<i class="fa-regular fa-image"></i>
+									<label for="image">+ Ajouter photo</label>
+									<input type="file" id="image" accept=".png, .jpeg" name="image"/>
+									<p>jpg, png : 4mo max</p>
+								</span>
+							</div>
+						</li>
+						<li>
+							<span>
+								<label for="title">Titre</label>
+								<input type="text" id="title" name="title" />
+							</span>
+						</li>
+						<li>
+							<span>
+								<label for="category">Catégorie</label>
+								<select id="category" name="category">
+									<option disabled selected value></option>
+								</select>
+							</span>
+						</li>
+					</ul>
+					<hr width="100%" size="2">
+					<button type="submit">Valider</button>
 				</form>
+			</div>
 		</div>
 	</aside>
 	<div class="editModeBanner">
@@ -65,11 +71,15 @@
 		<h1>Sophie Bluel <span>Architecte d'intérieur</span></h1>
 		<nav>
 			<ul>
-				<li>projets</li>
-				<li>contact</li>
 				<li>
-					<a href=login.html class="loginLink">login</a>
-					<a href=index.html class="logoutLink">logout</a>
+					<a href="#portfolio">projets</a>
+				</li>
+				<li>
+					<a href="#contact">contact</a>
+				</li>
+				<li>
+					<a href="login.html" class="loginLink">login</a>
+					<a href="index.html" class="logoutLink">logout</a>
 				</li>
 				<li><img src="./assets/icons/instagram.png" alt="Instagram"></li>
 			</ul>
