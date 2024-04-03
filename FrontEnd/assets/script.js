@@ -1,4 +1,4 @@
-function initializeGallery(works){
+function initializeGallery(works) {
 
     const gallery = document.querySelector(".gallery");
 
@@ -21,7 +21,7 @@ function initializeGallery(works){
     });
 }
 
-function displayFiltersButtons(categories){
+function displayFiltersButtons(categories) {
     
     const filters = document.querySelector(".filters");
     const categoriesArray = Array.from(new Set(categories));
@@ -43,7 +43,7 @@ function displayFiltersButtons(categories){
     });
 }
 
-function displayFilteredGallery(works, category){
+function displayFilteredGallery(works, category) {
 
     const worksHidden = document.querySelectorAll(".gallery figure");
     worksHidden.forEach(element => {

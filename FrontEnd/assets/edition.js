@@ -26,6 +26,7 @@ if(token){
     .then(categories => {
 
         categoriesInModal = document.querySelector("select[id=\"category\"]");
+        categoriesInModal.querySelector("option[disabled]").textContent = "";
 
         categories.forEach(element => {
 
@@ -44,7 +45,7 @@ if(token){
 
     function openModal() {
 
-        let modal = document.querySelector(".modal");
+        const modal = document.querySelector(".modal");
         modal.style = "display: flex";
         modal.style.setProperty("animation", "fadeIn .3s both");
         modal.querySelector(".modalWrapper").style.setProperty("animation", "slideFromTop .3s both");
@@ -88,7 +89,7 @@ if(token){
 
     function closeModal() {
 
-        let modal = document.querySelector(".modal");
+        const modal = document.querySelector(".modal");
 
         if(modal !== null){
 
@@ -187,8 +188,8 @@ if(token){
 
         if(e.target.tagName === "BUTTON"){
 
-            let gallery = document.querySelector(".gallery");
-            let galleryInModal = document.querySelector(".galleryInModal");
+            const gallery = document.querySelector(".gallery");
+            const galleryInModal = document.querySelector(".galleryInModal");
 
             fetch(`http://localhost:5678/api/works/${e.target.parentNode.id}`, {
                 method: "DELETE",
@@ -225,8 +226,8 @@ if(token){
 
     function previousModal() {
 
-        let activeModal = document.querySelector(".modalContent2");
-        let newModal = document.querySelector(".modalContent1");
+        const activeModal = document.querySelector(".modalContent2");
+        const newModal = document.querySelector(".modalContent1");
 
         activeModal.style.setProperty("display", "none");
         newModal.style.setProperty("display", "flex");
@@ -240,9 +241,9 @@ if(token){
 
     function addPictureModal() {
 
-        let activeModal = document.querySelector(".modalContent1");
-        let newModal = document.querySelector(".modalContent2");
-        let submitButton = newModal.querySelector(".addPictureForm button");
+        const activeModal = document.querySelector(".modalContent1");
+        const newModal = document.querySelector(".modalContent2");
+        const submitButton = newModal.querySelector(".addPictureForm button");
 
         activeModal.style.setProperty("display", "none");
         newModal.style.setProperty("display", "flex");
@@ -277,9 +278,9 @@ if(token){
     function validatePictureForm() {
 
         let form = document.forms["addPictureForm"];
-        let pictureField = document.querySelector(".pictureField");
-        let submitPicture = document.querySelector(".addPictureForm button");
         let submittable = true;
+        const pictureField = document.querySelector(".pictureField");
+        const submitPicture = document.querySelector(".addPictureForm button");
 
         for(let i = 0; i < form.length - 1; i++){
 
@@ -322,8 +323,8 @@ if(token){
         const addPictureForm = document.querySelector(".addPictureForm");
         const formData = new FormData(addPictureForm);
 
-        let gallery = document.querySelector(".gallery");
-        let galleryInModal = document.querySelector(".galleryInModal");
+        const gallery = document.querySelector(".gallery");
+        const galleryInModal = document.querySelector(".galleryInModal");
 
         fetch("http://localhost:5678/api/works", {   
             method: "POST",

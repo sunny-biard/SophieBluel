@@ -16,22 +16,22 @@
 	<script src="./assets/edition.js" defer></script>
 </head>
 <body>
-	<aside id="modalWindow" class="modal" aria-hidden="true" role="dialog" aria-labelledby="modalTitle">
+	<aside id="modalWindow" class="modal" aria-hidden="true" aria-labelledby="modalTitle">
 		<div class="modalWrapper">
 			<div class="navigationModalButtons">
 				<button class="previousModalButton"><i class="fa-solid fa-arrow-left"></i></button>
 				<button class="closeModalButton"><i class="fa-solid fa-xmark"></i></button>
 			</div>
 			<div class="modalContent1">
-				<h2 id="modalTitle">Galerie photo</h3>
+				<h2 id="modalTitle">Galerie photo</h2>
 				<div class ="galleryInModal">
 				</div>
-				<hr width="100%" size="2">
+				<hr>
 				<button class="addPicture">Ajouter une photo</button>
 			</div>
 			<div class="modalContent2">
 				<h2 id="modalTitle2">Ajout photo</h2>
-				<form action="" method="post" name="addPictureForm" class="addPictureForm">
+				<form method="post" name="addPictureForm" class="addPictureForm">
 					<ul>
 						<li>
 							<div class="pictureField">
@@ -39,7 +39,7 @@
 									<i class="fa-regular fa-image"></i>
 									<label for="image">+ Ajouter photo</label>
 									<input type="file" id="image" accept=".png, .jpeg" name="image"/>
-									<p>jpg, png : 4mo max</p>
+									jpg, png : 4mo max
 								</span>
 							</div>
 						</li>
@@ -53,12 +53,12 @@
 							<span>
 								<label for="category">Catégorie</label>
 								<select id="category" name="category">
-									<option disabled selected value></option>
+									<option hidden disabled selected value>Placeholder</option>
 								</select>
 							</span>
 						</li>
 					</ul>
-					<hr width="100%" size="2">
+					<hr>
 					<button type="submit">Valider</button>
 				</form>
 			</div>
