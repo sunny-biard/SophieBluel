@@ -22,26 +22,33 @@ if(token){
     const focusableSelectors = "button, a, input[type=text], select"
 
     fetch("http://localhost:5678/api/categories")
-    .then((resp) => resp.json())
-    .then(categories => {
+        .then((resp) => resp.json())
+        .then(categories => {
 
-        categoriesInModal = document.querySelector("select[id=\"category\"]");
-        categoriesInModal.querySelector("option[disabled]").textContent = "";
+            categoriesInModal = document.querySelector("select[id=\"category\"]");
+            categoriesInModal.querySelector("option[disabled]").textContent = "";
 
-        categories.forEach(element => {
+            categories.forEach(element => {
 
-            const category = document.createElement("option");
-            category.value = element.id;
-            category.innerHTML = element.name;
+                const category = document.createElement("option");
+                category.value = element.id;
+                category.innerHTML = element.name;
 
-            categoriesInModal.appendChild(category);
-        }
+                categoriesInModal.appendChild(category);
+            }
 
-        )
-    })
-    .catch(function(error) {
-        console.log(error);
-    });
+            )
+        })
+        .catch(function(error) {
+            console.log(error);
+        });
+
+    logoutLink.addEventListener("click", logout);
+
+    editButton.addEventListener("click", openModal);
+
+    const addButton = document.querySelector(".addPicture");
+    addButton.addEventListener("click", addPictureModal);
 
     function openModal() {
 
@@ -128,6 +135,46 @@ if(token){
         }
     }
 
+    function deleteWork(e) {
+
+        if(e.target.tagName === "BUTTON"){
+
+            const gallery = document.querySelector(".gallery");
+            const galleryInModal = document.querySelector(".galleryInModal");
+
+            fetch(`http://localhost:5678/api/works/${e.target.parentNode.id}`, {
+                method: "DELETE",
+                headers: {
+                    Authorization: `Bearer ${token}`
+                },
+            })
+            .then((resp) => {
+
+                if(resp.status === 204){
+
+                    gallery.querySelector(`[id="${e.target.parentNode.id}" ]`).remove();
+                    galleryInModal.querySelector(`[id="${e.target.parentNode.id}" ]`).remove();
+
+                    console.log(`DELETE SUCCESSFUL\nResponse status : ${resp.status}`);
+                    alert("Le projet a bien été supprimé.");
+                }
+                else if(resp.status === 401){
+
+                    console.log(`DELETE FAILED : UNAUTHORIZED ACCESS\nResponse status : ${resp.status}`);
+                    alert("Le projet n'a pas pu être supprimé : accès refusé.");
+                }
+                else {
+
+                    console.log(`DELETE FAILED : UNKNOWN ERROR\nResponse status : ${resp.status}`);
+                    alert("Le projet n'a pas pu être supprimé : erreur inconnue, veuillez réessayer.");
+                }
+            })
+            .catch(function(error) {
+                console.log(error);
+            });
+        }
+    }
+
     function stopPropagation(e) {
         
         e.stopPropagation();
@@ -184,61 +231,6 @@ if(token){
         }
     }
 
-    function deleteWork(e) {
-
-        if(e.target.tagName === "BUTTON"){
-
-            const gallery = document.querySelector(".gallery");
-            const galleryInModal = document.querySelector(".galleryInModal");
-
-            fetch(`http://localhost:5678/api/works/${e.target.parentNode.id}`, {
-                method: "DELETE",
-                headers: {
-                    Authorization: `Bearer ${token}`
-                },
-            })
-            .then((resp) => {
-
-                if(resp.status === 204){
-
-                    gallery.querySelector(`[id="${e.target.parentNode.id}" ]`).remove();
-                    galleryInModal.querySelector(`[id="${e.target.parentNode.id}" ]`).remove();
-
-                    console.log(`DELETE SUCCESSFUL\nResponse status : ${resp.status}`);
-                    alert("Le projet a bien été supprimé.");
-                }
-                else if(resp.status === 401){
-
-                    console.log(`DELETE FAILED : UNAUTHORIZED ACCESS\nResponse status : ${resp.status}`);
-                    alert("Le projet n'a pas pu être supprimé : accès refusé.");
-                }
-                else {
-
-                    console.log(`DELETE FAILED : UNKNOWN ERROR\nResponse status : ${resp.status}`);
-                    alert("Le projet n'a pas pu être supprimé : erreur inconnue, veuillez réessayer.");
-                }
-            })
-            .catch(function(error) {
-                console.log(error);
-            });
-        }
-    }
-
-    function previousModal() {
-
-        const activeModal = document.querySelector(".modalContent2");
-        const newModal = document.querySelector(".modalContent1");
-
-        activeModal.style.setProperty("display", "none");
-        newModal.style.setProperty("display", "flex");
-
-        document.querySelector(".navigationModalButtons").style.setProperty("justify-content", "flex-end");
-        previousModalButton = document.querySelector(".previousModalButton");
-        previousModalButton.style.setProperty("display", "none");
-
-        closePictureForm();
-    }
-
     function addPictureModal() {
 
         const activeModal = document.querySelector(".modalContent1");
@@ -259,20 +251,19 @@ if(token){
         submitButton.addEventListener("click", addPictureForm);
     }
 
-    function closePictureForm() {
+    function previousModal() {
 
-        let form = document.forms["addPictureForm"];
+        const activeModal = document.querySelector(".modalContent2");
+        const newModal = document.querySelector(".modalContent1");
 
-        for(let i = 0; i < form.length - 1; i++){
+        activeModal.style.setProperty("display", "none");
+        newModal.style.setProperty("display", "flex");
 
-            if(form.elements[i].type === "file" && form.elements[i].value){
+        document.querySelector(".navigationModalButtons").style.setProperty("justify-content", "flex-end");
+        previousModalButton = document.querySelector(".previousModalButton");
+        previousModalButton.style.setProperty("display", "none");
 
-                document.querySelector(".pictureField img").remove();
-            }
-            form.elements[i].value = null;
-        }
-
-        document.querySelector(".pictureSpan").style.setProperty("display", "flex");
+        closePictureForm();
     }
 
     function validatePictureForm() {
@@ -378,15 +369,24 @@ if(token){
         });
     }
 
+    function closePictureForm() {
+
+        let form = document.forms["addPictureForm"];
+
+        for(let i = 0; i < form.length - 1; i++){
+
+            if(form.elements[i].type === "file" && form.elements[i].value){
+
+                document.querySelector(".pictureField img").remove();
+            }
+            form.elements[i].value = null;
+        }
+
+        document.querySelector(".pictureSpan").style.setProperty("display", "flex");
+    }
+
     function logout(){
 
         window.localStorage.clear();
     }
-
-    logoutLink.addEventListener("click", logout);
-
-    editButton.addEventListener("click", openModal);
-
-    const addButton = document.querySelector(".addPicture");
-    addButton.addEventListener("click", addPictureModal);
 }

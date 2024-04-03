@@ -1,5 +1,6 @@
 const form = document.querySelector(".loginForm");
 form.addEventListener("submit", function (event) {
+    
     event.preventDefault();
 
     const user = {
