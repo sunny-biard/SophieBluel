@@ -1,4 +1,4 @@
-# Site Sophie Bluel
+# Site "Sophie Bluel"
 
 Projet OpenClassrooms "Créez une page web dynamique avec JavaScript" par Sunny BIARD.
 
