@@ -379,6 +379,10 @@ footer nav ul {
 	font-weight: 400;
 }
 
+.modalWrapper hr {
+	width: 100%;
+}
+
 .modalContent1 {
 	display: none;
 	align-items: center;
@@ -520,8 +524,9 @@ footer nav ul {
 
 .pictureSpan {
 	align-items: center;
-	font-size: 76px;
 	padding: 15px 0;
+	font-size: 10px;
+	color: black;
 }
 
 .pictureSpan input {
@@ -540,9 +545,9 @@ footer nav ul {
 	cursor: pointer;
 }
 
-.pictureSpan p {
-	font-size: 10px;
-	color: black;
+.pictureSpan i {
+	color: #CBD6DC;
+	font-size: 76px;
 }
 
 .addPictureForm label {
