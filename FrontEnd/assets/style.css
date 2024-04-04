@@ -232,6 +232,10 @@ input[type="submit"]{
 	border-radius: 60px ;
 }
 
+input[type="submit"]:hover {
+	cursor: pointer;
+}
+
 footer nav ul {
 	display: flex;
 	justify-content: flex-end;
@@ -360,6 +364,11 @@ footer nav ul {
 	background: rgba(0, 0, 0, 0.4);
 	width: 100%;
 	height: 100%;
+	animation: fadeIn .3s both;
+}
+
+.modal[aria-hidden=true] {
+	animation-name: fadeOut;
 }
 
 .modalWrapper {
@@ -370,6 +379,11 @@ footer nav ul {
 	padding: 15px 15px;
 	background-color: white;
 	border-radius: 15px;
+	animation: slideFromTop .3s both;
+}
+
+.modal[aria-hidden=true] .modalWrapper {
+	animation-name: slideFromBottom;
 }
 
 .modalWrapper h2 {
@@ -600,7 +614,7 @@ footer nav ul {
 	to { transform: translateY(0); }
 }
 
-@keyframes slideToBottom {
+@keyframes slideFromBottom {
 	from { transform: translateY(0); }
 	to { transform: translateY(-50px); }
 }

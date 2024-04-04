@@ -54,8 +54,6 @@ if(token){
 
         const modal = document.querySelector(".modal");
         modal.style = "display: flex";
-        modal.style.setProperty("animation", "fadeIn .3s both");
-        modal.querySelector(".modalWrapper").style.setProperty("animation", "slideFromTop .3s both");
         modal.removeAttribute("aria-hidden");
         modal.setAttribute("aria-modal", "true");
         modal.querySelector(".modalContent1").style.setProperty("display", "flex");
@@ -99,10 +97,7 @@ if(token){
         const modal = document.querySelector(".modal");
 
         if(modal !== null){
-
-            modal.style.setProperty("animation", "fadeOut .3s both");
-            modal.querySelector(".modalWrapper").style.setProperty("animation", "slideToBottom .3s both");
-            
+    
             window.setTimeout(function() {
 
                 modal.style.setProperty("display", "none");

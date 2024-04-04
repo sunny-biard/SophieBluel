@@ -43,16 +43,12 @@ function displayFiltersButtons(categories) {
     });
 }
 
-function displayFilteredGallery(works, category) {
+function displayFilteredGallery(category) {
 
-    const worksHidden = document.querySelectorAll(".gallery figure");
-    worksHidden.forEach(element => {
+    const works = document.querySelectorAll(".gallery figure");
+    works.forEach(element => {
         element.classList.remove("hidden");
-    })
 
-    const worksFiltered = document.querySelectorAll(".gallery figure");
-    worksFiltered.forEach(element => {
-        
         if(element.dataset.category != category && category != 0){
 
             element.classList.toggle("hidden");
@@ -85,7 +81,7 @@ fetch("http://localhost:5678/api/categories")
 
                 element.classList.add("btnSelected")
 
-                displayFilteredGallery(worksDetails, element.id);
+                displayFilteredGallery(element.id);
             })
         })
     })
