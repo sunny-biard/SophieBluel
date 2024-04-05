@@ -2,8 +2,6 @@ const token = window.localStorage.getItem("token");
 
 if(token){
 
-    console.log(`TOKEN : ${token}`);
-
     const editModeBanner = document.querySelector(".editModeBanner");
     editModeBanner.style = "display: flex";
 
@@ -40,7 +38,7 @@ if(token){
             )
         })
         .catch(function(error) {
-            console.log(error);
+            console.error(error);
         });
 
     logoutLink.addEventListener("click", logout);
@@ -80,7 +78,7 @@ if(token){
                 });
             })
             .catch(function(error) {
-                console.log(error);
+                console.error(error);
             });
 
         
@@ -150,22 +148,19 @@ if(token){
                     gallery.querySelector(`[id="${e.target.parentNode.id}" ]`).remove();
                     galleryInModal.querySelector(`[id="${e.target.parentNode.id}" ]`).remove();
 
-                    console.log(`DELETE SUCCESSFUL\nResponse status : ${resp.status}`);
                     alert("Le projet a bien été supprimé.");
                 }
                 else if(resp.status === 401){
 
-                    console.log(`DELETE FAILED : UNAUTHORIZED ACCESS\nResponse status : ${resp.status}`);
                     alert("Le projet n'a pas pu être supprimé : accès refusé.");
                 }
                 else {
 
-                    console.log(`DELETE FAILED : UNKNOWN ERROR\nResponse status : ${resp.status}`);
                     alert("Le projet n'a pas pu être supprimé : erreur inconnue, veuillez réessayer.");
                 }
             })
             .catch(function(error) {
-                console.log(error);
+                console.error(error);
             });
         }
     }
@@ -338,29 +333,25 @@ if(token){
 
                 gallery.appendChild(figure);
 
-                console.log(`CREATION SUCCESSFUL\nResponse status : ${resp.status}`);
                 alert("Le projet a bien été ajouté.");
 
                 closeModal();
             }
             else if(resp.status === 400){
 
-                console.log(`CREATION FAILED : BAD REQUEST\nResponse status : ${resp.status}`);
                 alert("Le projet n'a pas pu être ajouté : au moins l'un des champs est invalide.");
             }
             else if(resp.status === 401){
 
-                console.log(`CREATION FAILED : UNAUTHORIZED ACCESS\nResponse status : ${resp.status}`);
                 alert("Le projet n'a pas pu être ajouté : accès refusé.");
             }
             else {
 
-                console.log(`CREATION FAILED : UNKNOWN ERROR\nResponse status : ${resp.status}`);
                 alert("Le projet n'a pas pu être ajouté : erreur inconnue, veuillez réessayer.");
             }
         }))
         .catch(function(error) {
-            console.log(error);
+            console.error(error);
         });
     }
 

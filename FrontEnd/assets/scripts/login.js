@@ -26,7 +26,6 @@ form.addEventListener("submit", function (event) {
         }
         else{
 
-            console.log("CONNEXION FAILED : ID and/or Password incorrect.")
             window.alert("Erreur dans l’identifiant et/ou le mot de passe");
         }
             

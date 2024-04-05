@@ -63,7 +63,7 @@ fetch("http://localhost:5678/api/works")
         initializeGallery(worksDetails);
     })
     .catch(function(error) {
-        console.log(error);
+        console.error(error);
     });
 
 fetch("http://localhost:5678/api/categories")
@@ -86,5 +86,5 @@ fetch("http://localhost:5678/api/categories")
         })
     })
     .catch(function(error) {
-        console.log(error);
+        console.error(error);
     });
