@@ -2,6 +2,8 @@ const token = window.localStorage.getItem("token");
 
 if(token){
 
+    document.querySelector(".filters").style.setProperty("display", "none");
+
     const editModeBanner = document.querySelector(".editModeBanner");
     editModeBanner.style = "display: flex";
 
